@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,22 +9,23 @@ import Sheet_Components.Note;
 
 public class Sheet {
 	private Attributes attributes;
-	private String movement,creator; //move to Attributes
 	private ArrayList<Note>notes;
+	private File file; //TODO Implement file selection
 	
-	public Sheet()
+	public Sheet() throws IOException
 	{
+		FileInputStream stream = new FileInputStream(file);
+		attributes = new Attributes();
 		notes = new ArrayList<Note>();
+		buildSheet(stream);
 	}
 
-	public void readBuildSheet(
-		   FileInputStream fis,
-		   String          encoding ) throws IOException
+	private void buildSheet(
+		   FileInputStream fis) throws IOException
 	 {
 	   try( BufferedReader br =
-	           new BufferedReader( new InputStreamReader(fis, encoding )))
+	           new BufferedReader( new InputStreamReader(fis, "ASCII" )))
 	   {
-	      StringBuilder sb = new StringBuilder();
 	      String line;
 	      while(( line = br.readLine()) != null ) {
 	         checkLine(line);
@@ -34,8 +36,14 @@ public class Sheet {
 	private void checkLine(String line)
 	{
 		if(line.contains("<movement-title>"))
-			movement=line.substring(line.indexOf("<movement-title>")+16, line.indexOf("</"));
-		if(line.contains("<creator"))
-			creator=line.substring(line.indexOf(">")+1, line.indexOf("</"));
+		{
+			attributes.setIdentification(
+					line.substring(line.indexOf("<movement-title>")+16, line.indexOf("</")));
+		}
+		else if(line.contains("<creator"))
+		{
+			attributes.setIdentification(
+					line.substring(line.indexOf(">")+1, line.indexOf("</")), null);
+		}
 	}
 }
