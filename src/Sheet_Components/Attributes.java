@@ -2,7 +2,7 @@ package Sheet_Components;
 import Sheet_Components.SheetAttributes.*;
 
 /**
- * Stores all of the attributes that the music could need. Uses 
+ * Stores all of the attributes that the music could need. Uses many objects to store and organize the properties
  */
 public class Attributes { //TODO Possibly compress some of the get/set methods and force the user to get the objects and then use their methods to change stored info.
 	private Clef clef;
@@ -11,6 +11,9 @@ public class Attributes { //TODO Possibly compress some of the get/set methods a
 	private Time time;
 	private Transpose transpose;
 	
+	/**
+	 * Creates all objects needed to store the attributes
+	 */
 	public Attributes()
 	{
 		clef = new Clef();
